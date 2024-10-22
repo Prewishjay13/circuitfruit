@@ -1,0 +1,33 @@
+   int ledpin = 4;
+   int buttonApin = 6;
+   int buttonBpin = 8;
+   
+   void setup() {
+  pinMode(ledpin, OUTPUT);
+  pinMode(buttonApin, INPUT);
+  pinMode(buttonBpin, INPUT);
+  // put your setup code here, to run once:
+}
+
+void loop() {
+  if (digitalRead(buttonApin)== HIGH && digitalRead(buttonBpin)== HIGH){
+    digitalWrite(ledpin, LOW);
+    delay(100);
+    digitalWrite(ledpin, HIGH);
+    delay(100);
+    }
+  else{
+  if (digitalRead(buttonApin)== HIGH){
+    digitalWrite(ledpin, HIGH);
+    }
+  else{ 
+    digitalWrite(ledpin, LOW);
+    }
+  if (digitalRead(buttonBpin)== HIGH){
+  digitalWrite(ledpin, HIGH);
+  delay(500);
+  digitalWrite(ledpin, LOW);
+  delay(500);}// put your main code here, to run repeatedly:
+
+}
+}
