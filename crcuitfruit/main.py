@@ -3,6 +3,7 @@ import board
 import time
 
 led = digitalio.DigitalInOut(board.LED)
+#led = digitalio.DigitalInOut(board.D10) # GP10 voor Pi Pic
 led.direction = digitalio.Direction.OUTPUT
 
 while True:
