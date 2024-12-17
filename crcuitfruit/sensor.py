@@ -1,18 +1,20 @@
-import digitalio
-import adafruit_hcsr04
 import board
+import pwmio
 import time
+import adafruit_hcsr04 #voor de sensor
+##sensor aan 5v aansluiten!
 
-led = digitalio.DigitalInOut(board.LED)
-led.direction = digitalio.Direction.OUTPUT
+sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.GP3, echo_pin=board.GP4)
+drempel = 5
 
 while True:
-    led.value = True
-    time.sleep(1)
-    led.value = False
-    time.sleep(1)
-    
-
-
-#code aanpasssing
-#aanpassing2
+    try:
+        afstand = sonar.distance
+        if afstand <= drempel:
+            print("sensor aan")
+        else:
+            print("sensor uit")
+        print(afstand)
+    except RuntimeError:
+        print("retrying")
+    time.sleep(0.005)
