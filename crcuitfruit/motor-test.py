@@ -2,23 +2,7 @@ import board
 import digitalio
 import pwmio
 import time
-import adafruit_hcsr04 #voor de sensor
 
-
-sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.GP3, echo_pin=board.GP4)
-drempel = 5
-
-while True:
-    try:
-        afstand = sonar.distance
-        if afstand <= drempel:
-            print("sensor aan")
-        else:
-            print("sensor uit")
-        print(afstand)
-    except RuntimeError:
-        print("retrying")
-    time.sleep(0.005)
 IN1 = digitalio.DigitalInOut(board.D3)  # IN1 van L298N
 IN1.direction = digitalio.Direction.OUTPUT
 

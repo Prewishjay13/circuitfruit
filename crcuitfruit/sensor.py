@@ -2,9 +2,9 @@ import board
 import pwmio
 import time
 import adafruit_hcsr04 #voor de sensor
-##sensor aan 5v aansluiten!
 
-sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.GP3, echo_pin=board.GP4)
+
+sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.D13, echo_pin=board.D12)
 drempel = 5
 
 while True:
