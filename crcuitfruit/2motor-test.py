@@ -20,7 +20,7 @@ ENA_M1 = pwmio.PWMOut(board.D5, frequency=1000)
 IN1_M2 = digitalio.DigitalInOut(board.D6)
 IN1_M2.direction = digitalio.Direction.OUTPUT
 
-IN2_M2 = digitalio.DigitalInOut(board.D9)
+IN2_M2 = digitalio.DigitalInOut(board.D7)
 IN2_M2.direction = digitalio.Direction.OUTPUT
 
 ENA_M2 = pwmio.PWMOut(board.D8, frequency=1000)
@@ -63,8 +63,8 @@ def set_motor(motor, direction, speed):
 # Drempelwaarden
 drempel_dichtbij = 5
 drempel_verweg = 20
-motor1_snelheid = 60768  # 50% PWM
-motor2_snelheid_factor = 0.5
+motor1_snelheid = 32768  # 50% PWM
+motor2_snelheid_factor = 0.25
 
 # Start de motors in "stop"
 set_motor("M1", "stop", 0)
