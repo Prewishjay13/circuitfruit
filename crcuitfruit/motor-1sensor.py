@@ -58,9 +58,7 @@ try:
             elif afstand >= drempel_verweg:
                 print("Afstand ver weg, motor beweegt achteruit.")
                 set_motor("backward", motor_snelheid)
-            else:
-                print("Afstand binnen neutrale zone, motor stopt.")
-                set_motor("stop", 0)
+          
 
         except RuntimeError:
             print("Fout bij het lezen van de sensor. Probeer opnieuw...")
