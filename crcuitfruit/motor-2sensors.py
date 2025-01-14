@@ -17,10 +17,10 @@ IN2_M1.direction = digitalio.Direction.OUTPUT
 ENA_M1 = pwmio.PWMOut(board.D5, frequency=1000)
 
 # L298N Motorinstellingen voor Motor 2
-IN1_M2 = digitalio.DigitalInOut(board.D6)
+IN1_M2 = digitalio.DigitalInOut(board.D5)
 IN1_M2.direction = digitalio.Direction.OUTPUT
 
-IN2_M2 = digitalio.DigitalInOut(board.D9)
+IN2_M2 = digitalio.DigitalInOut(board.D6)
 IN2_M2.direction = digitalio.Direction.OUTPUT
 
 ENA_M2 = pwmio.PWMOut(board.D8, frequency=1000)
