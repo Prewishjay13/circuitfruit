@@ -7,19 +7,6 @@ import adafruit_hcsr04  # Voor de ultrasone afstandssensor
 # Instellen van de ultrasone sensor
 sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.D13, echo_pin=board.D12)
 
-# Instellen van de knoppen
-button1 = digitalio.DigitalInOut(board.D2)  # Modus wisselen
-button1.direction = digitalio.Direction.INPUT
-button1.pull = digitalio.Pull.UP
-
-button2 = digitalio.DigitalInOut(board.D10)  # Motor 2 vooruit
-button2.direction = digitalio.Direction.INPUT
-button2.pull = digitalio.Pull.UP
-
-button3 = digitalio.DigitalInOut(board.D11)  # Motor 2 achteruit
-button3.direction = digitalio.Direction.INPUT
-button3.pull = digitalio.Pull.UP
-
 # L298N Motorinstellingen voor Motor 1
 IN1_M1 = digitalio.DigitalInOut(board.D3)
 IN1_M1.direction = digitalio.Direction.OUTPUT
@@ -38,6 +25,19 @@ IN2_M2.direction = digitalio.Direction.OUTPUT
 
 ENA_M2 = pwmio.PWMOut(board.D8, frequency=1000)
 
+# Instellen van knoppen
+button1 = digitalio.DigitalInOut(board.D2)  # Voor wisselen tussen automatisch en handmatig
+button1.direction = digitalio.Direction.INPUT
+button1.pull = digitalio.Pull.DOWN
+
+button2 = digitalio.DigitalInOut(board.D10)  # Voor Motor 2 richting 1
+button2.direction = digitalio.Direction.INPUT
+button2.pull = digitalio.Pull.DOWN
+
+button3 = digitalio.DigitalInOut(board.D11)  # Voor Motor 2 richting 2
+button3.direction = digitalio.Direction.INPUT
+button3.pull = digitalio.Pull.DOWN
+
 # Motorbesturingsfunctie
 def set_motor(motor, direction, speed):
     """
@@ -46,7 +46,6 @@ def set_motor(motor, direction, speed):
     :param direction: 'forward', 'backward', 'stop'
     :param speed: snelheid (0-65535)
     """
-    # Selecteer de juiste pinnen afhankelijk van de motor
     if motor == "M1":
         IN1, IN2, ENA = IN1_M1, IN2_M1, ENA_M1
     elif motor == "M2":
@@ -55,7 +54,6 @@ def set_motor(motor, direction, speed):
         print("[FOUT] Ongeldige motor!")
         return
 
-    # Stel de richting in
     if direction == "forward":
         IN1.value = True
         IN2.value = False
@@ -69,9 +67,7 @@ def set_motor(motor, direction, speed):
         print("[FOUT] Ongeldige richting!")
         return
 
-    # Stel de snelheid in
     ENA.duty_cycle = speed
-    print(f"[DEBUG] Motor {motor}: richting={direction}, snelheid={speed}, IN1={IN1.value}, IN2={IN2.value}")
 
 # Drempelwaarden
 drempel_dichtbij = 5
@@ -79,8 +75,10 @@ drempel_verweg = 20
 motor1_snelheid = 60768  # 50% PWM
 motor2_snelheid_factor = 0.5
 
-# Modusvariabele
-manual_mode = False  # Standaard: automatisch
+# Startinstellingen
+is_manual = False  # Standaardmodus: automatisch
+motor1_direction = "forward"
+motor2_direction = "forward"
 
 # Start de motors in "stop"
 set_motor("M1", "stop", 0)
@@ -88,30 +86,30 @@ set_motor("M2", "stop", 0)
 
 # Hoofdprogramma
 print("Starten van de sensor-motor integratie...")
+print("Wachten 5 seconden voordat de motoren starten...")
+time.sleep(5)  # Wacht 5 seconden
+
 try:
-    motor1_direction = "forward"  # Begin met vooruit bewegen
-    motor2_direction = "forward"  # Begin met vooruit bewegen
-
     while True:
-        try:
-            # Controleer op moduswissel
-            if not button1.value:  # Knop ingedrukt
-                manual_mode = not manual_mode  # Wissel modus
-                print(f"Modus gewijzigd naar {'Handmatig' if manual_mode else 'Automatisch'}")
-                time.sleep(0.2)  # Debounce vertraging
+        # Controleer op moduswijziging
+        if button1.value:
+            is_manual = not is_manual
+            time.sleep(0.3)  # Debouncing
+            print(f"Modus gewijzigd: {'Handmatig' if is_manual else 'Automatisch'}")
 
-            if manual_mode:
-                # Handmatige modus: motoren reageren op knoppen
-                if not button2.value:  # Knop 2 ingedrukt (vooruit)
-                    set_motor("M2", "forward", int(motor1_snelheid * motor2_snelheid_factor))
-                elif not button3.value:  # Knop 3 ingedrukt (achteruit)
-                    set_motor("M2", "backward", int(motor1_snelheid * motor2_snelheid_factor))
-                else:
-                    set_motor("M2", "stop", 0)  # Geen knop ingedrukt
-
+        if is_manual:
+            # Handmatige modus: stuur motor 2 aan met knoppen
+            if button2.value:
+                set_motor("M2", "forward", int(motor1_snelheid * motor2_snelheid_factor))
+            elif button3.value:
+                set_motor("M2", "backward", int(motor1_snelheid * motor2_snelheid_factor))
             else:
-                # Automatische modus: afhankelijk van de afstand
-                afstand = sonar.distance  # Lees de afstand
+                set_motor("M2", "stop", 0)
+
+        else:
+            # Automatische modus: gebruik de sensor om motoren aan te sturen
+            try:
+                afstand = sonar.distance
                 print(f"Gemeten afstand: {afstand:.2f} cm")
 
                 if afstand <= drempel_dichtbij:
@@ -137,8 +135,9 @@ try:
                     set_motor("M1", motor1_direction, motor1_speed)
                     set_motor("M2", motor2_direction, motor2_speed)
 
-        except RuntimeError:
-            print("Fout bij het lezen van de sensor. Probeer opnieuw...")
+            except RuntimeError:
+                print("Fout bij het lezen van de sensor. Probeer opnieuw...")
+
         time.sleep(0.05)
 except KeyboardInterrupt:
     print("Programma gestopt door gebruiker.")
