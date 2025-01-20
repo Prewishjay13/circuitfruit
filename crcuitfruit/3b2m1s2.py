@@ -30,11 +30,11 @@ button1 = digitalio.DigitalInOut(board.D2)  # Voor wisselen tussen automatisch e
 button1.direction = digitalio.Direction.INPUT
 button1.pull = digitalio.Pull.DOWN
 
-button2 = digitalio.DigitalInOut(board.D10)  # Voor Motor 2 richting 1 (handmatig)
+button2 = digitalio.DigitalInOut(board.D10)  # Voor Motor 2 richting 1
 button2.direction = digitalio.Direction.INPUT
 button2.pull = digitalio.Pull.DOWN
 
-button3 = digitalio.DigitalInOut(board.D11)  # Voor Motor 2 richting 2 (handmatig)
+button3 = digitalio.DigitalInOut(board.D11)  # Voor Motor 2 richting 2
 button3.direction = digitalio.Direction.INPUT
 button3.pull = digitalio.Pull.DOWN
 
@@ -99,19 +99,16 @@ try:
             print(f"Modus gewijzigd: {'Handmatig' if is_manual else 'Automatisch'}")
 
         if is_manual:
-            # Handmatige modus: stuur beide motoren aan met knoppen
+            # Handmatige modus: stuur motor 2 aan met knoppen
             if button2.value:
                 set_motor("M2", "forward", int(motor1_snelheid * motor2_snelheid_factor))
-                set_motor("M1", "backward", motor1_snelheid)
-                print("Motor 2 vooruit, Motor 1 achteruit (handmatig).")
+                print("Motor 2 beweegt vooruit (handmatig).")
             elif button3.value:
                 set_motor("M2", "backward", int(motor1_snelheid * motor2_snelheid_factor))
-                set_motor("M1", "forward", motor1_snelheid)
-                print("Motor 2 achteruit, Motor 1 vooruit (handmatig).")
+                print("Motor 2 beweegt achteruit (handmatig).")
             else:
                 set_motor("M2", "stop", 0)
-                set_motor("M1", "stop", 0)
-                print("Beide motoren gestopt (handmatig).")
+                print("Motor 2 gestopt (handmatig).")
 
         else:
             # Automatische modus: gebruik de sensor om motoren aan te sturen
