@@ -20,10 +20,10 @@ ENA_M1 = pwmio.PWMOut(board.D5, frequency=1000)
 IN1_M2 = digitalio.DigitalInOut(board.D6)
 IN1_M2.direction = digitalio.Direction.OUTPUT
 
-IN2_M2 = digitalio.DigitalInOut(board.D9)
+IN2_M2 = digitalio.DigitalInOut(board.D8)
 IN2_M2.direction = digitalio.Direction.OUTPUT
 
-ENA_M2 = pwmio.PWMOut(board.D8, frequency=1000)
+ENA_M2 = pwmio.PWMOut(board.D9, frequency=1000)
 
 # Instellen van knoppen
 button1 = digitalio.DigitalInOut(board.D2)  # Voor wisselen tussen automatisch en handmatig
@@ -86,8 +86,8 @@ set_motor("M2", "stop", 0)
 
 # Hoofdprogramma
 print("Starten van de sensor-motor integratie...")
-print("Wachten 5 seconden voordat de motoren starten...")
-time.sleep(5)  # Wacht 5 seconden
+print("Wachten 3 seconden voordat de motoren starten...")
+time.sleep(3)  # Wacht 3 seconden
 
 try:
     while True:
