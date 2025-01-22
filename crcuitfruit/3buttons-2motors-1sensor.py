@@ -85,7 +85,7 @@ debounce_delay = 0.3  # 300 ms
 # Start de motors in "stop"
 set_motor("M1", "stop", 0)
 set_motor("M2", "stop", 0)
-
+#while true en try/except mmoet andersom
 # Hoofdprogramma
 print("Starten van de sensor-motor integratie...")
 time.sleep(3)  # Wacht 3 seconden
