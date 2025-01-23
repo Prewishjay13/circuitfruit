@@ -70,12 +70,13 @@ def set_motor(motor, direction, speed):
         return
 
     ENA.duty_cycle = speed
+    print(f"[DEBUG] Motor {motor}: richting={direction}, snelheid={speed}, IN1={IN1.value}, IN2={IN2.value}")
 
 # Drempelwaarden
 drempel_dichtbij = 5
 drempel_verweg = 20
 motor1_snelheid = 60768  # 50% PWM
-motor2_snelheid_factor = 0.5
+motor2_snelheid_factor = 1
 
 # Startinstellingen
 is_manual = False  # Standaardmodus: automatisch
@@ -85,7 +86,7 @@ debounce_delay = 0.3  # 300 ms
 # Start de motors in "stop"
 set_motor("M1", "stop", 0)
 set_motor("M2", "stop", 0)
-#while true en try/except mmoet andersom
+
 # Hoofdprogramma
 print("Starten van de sensor-motor integratie...")
 time.sleep(3)  # Wacht 3 seconden
@@ -127,9 +128,10 @@ try:
                     set_motor("M1", "backward", motor1_snelheid)
                     set_motor("M2", "backward", int(motor1_snelheid * motor2_snelheid_factor))
                 else:
-                    print("Afstand in tussenbereik, motoren gestopt.")
-                    set_motor("M1", "stop", 0)
-                    set_motor("M2", "stop", 0)
+                print("Afstand in tussenbereik, motoren blijven in de laatste richting.")
+                set_motor("M1", motor1_direction, motor1_speed)
+                set_motor("M2", motor2_direction, motor2_speed)
+
             except RuntimeError:
                 print("Fout bij het lezen van de sensor. Probeer opnieuw...")
 
