@@ -41,10 +41,60 @@ import math
 
 
 
-getal = int(input("voer getal in: "))
-result = getal % 7 
-if result == 0:
-    print("deelbaar" + str(result))
-else:
-    print("niet deelbaar, restant is: " + str(result))
+# getal = int(input("voer getal in: "))
+# result = getal % 7 
+# if result == 0:
+#     print("deelbaar" + str(result))
+# else:
+#     print("niet deelbaar, restant is: " + str(result))
+
+# materiaal = str(input("voer een materiaal in: (Staal, Plastic, Random)")).casefold()
+# if materiaal == "aluminium":
+#     print("dichtheid is: 123")
+# elif materiaal == "plastic":
+#     print("dichtheid is: 330")
+# elif materiaal == "random":
+#     print("random shit")
+
+# getal1 = input("getal 1: ")
+# getal2 = input("getal 2: ")
+
+# aantal_cijfers = len(getal1)
+# print(aantal_cijfers, getal2)
+
+# Stap 1: Maak een lijst met waarden
+# waarden = ["appel", "banaan", "kers", "druif", "mango"]
+# invoer = input("Voer een waarde in om te controleren: ").strip().lower()
+# # Stap 3: Controleer of de invoer in de lijst voorkomt
+# if invoer in waarden:
+#     print(f"De waarde '{invoer}' komt voor in de lijst.")
+# else:
+#     print(f"De waarde '{invoer}' komt niet voor in de lijst.")
+
+# getal = round(float(input("voer in ")),2)
+# if 8 < getal < 10:
+#     beoordeling = "A"
+# elif 7 < getal < 8:
+#     beoordeling = "B" 
+# elif 5 < getal < 6:
+#     beoordeling = "C"
+# else:
+#     beoordeling = "ieuw"
+# print(beoordeling)
+
+# Stap a: Ken het nummer 3 aan een variabele getal1 toe
+# getal1 = int(input("voer getal in "))
+# getal2 = int(input("voer getal in "))
+# # Stap c: Zoek de maximale waarde uit de twee getallen
+# maximaal = max(getal1, getal2)
+# # Stap d: Bereken het maximale getal tot de macht 5
+# uitkomst = pow(maximaal, 5)
+# # Stap e: Print de som, inclusief de variabelen maximaal en uitkomst
+# print(f"De maximale waarde is {maximaal} en {maximaal} tot de macht 5 is {uitkomst}.")
+
+print(round((math.pi),2))
+
+
+
+
 
